@@ -20,10 +20,23 @@ export default function Unlock() {
 
     setLoading(true)
     const { data, error } = await supabase
-      .from('user_settings')
-      .select('*')
-      .eq('pin', pin)
-      .single()
+  .from('user_settings')
+  .select('*')
+  .single()
+
+if (error || !data) {
+  setError('Incorrect PIN. Please try again.')
+  setPin('')
+  setLoading(false)
+  return
+}
+
+if (data.pin !== pin) {
+  setError('Incorrect PIN. Please try again.')
+  setPin('')
+  setLoading(false)
+  return
+}
 
     if (error || !data) {
       setError('Incorrect PIN. Please try again.')
