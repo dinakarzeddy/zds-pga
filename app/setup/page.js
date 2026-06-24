@@ -21,7 +21,8 @@ export default function Setup() {
     if (pin.length !== 4 || isNaN(pin)) { setError('PIN must be exactly 4 digits.'); return }
 
     setLoading(true)
-    const { error } = await supabase.from('user_settings').insert({ pin, api_key: apiKey })
+    await supabase.from('user_settings').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+const { error } = await supabase.from('user_settings').insert({ pin, api_key: apiKey })
     if (error) { setError('Something went wrong: ' + error.message); setLoading(false); return }
 
     localStorage.setItem('ga_setup', 'true')
